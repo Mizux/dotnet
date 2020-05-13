@@ -19,9 +19,13 @@ jobs:
     - name: Configure
       run: cmake -S. -Bbuild -G "Xcode" -DCMAKE_CONFIGURATION_TYPES=Release
     - name: Build
-      run: cmake --build build --config Release --target ALL_BUILD -v
+      run: cmake --build build --config Release --target ALL_BUILD -v -- -verbose
+    - name: list
+      run: cmake --build build --config Release --target ALL_BUILD -v -- -list
+    - name: Manual ctest
+      run: cd build && ctest -C Release --verbose --extra-verbose --output-on-failure
     - name: Test
-      run: CTEST_OUTPUT_ON_FAILURE=1 cmake --build build --config Release --target RUN_TESTS -v
+      run: CTEST_OUTPUT_ON_FAILURE=1 VERBOSE=1 cmake --build build --config Release --target RUN_TESTS -v -- -verbose
     - name: Install
       run: cmake --build build --config Release --target install -v
   make:
